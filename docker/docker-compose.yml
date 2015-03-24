@@ -1,0 +1,6 @@
+api:
+    build: .
+    ports: 
+        - "5000:5000"
+    environment:
+        - OPENSHIFT_APP_DNS=localhost:5000
