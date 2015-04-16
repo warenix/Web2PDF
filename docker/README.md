@@ -1,7 +1,14 @@
 ## Web2PDF Dockerfile
 
-
 This repository contains **Dockerfile** of [Web2PDF](https://play.google.com/store/apps/details?id=org.dyndns.warenix.web2pdf) for [Docker](https://www.docker.com/)
+
+
+## Docker image
+
+Latest docker image is built and hosted on [quay.io](https://quay.io). You can pull one by:
+```sh
+docker pull quay.io/warenix/web2pdf:latest
+```
 
 
 ### Base Docker Image
@@ -55,3 +62,5 @@ This repository contains **Dockerfile** of [Web2PDF](https://play.google.com/sto
     ```
     
     You can try again then.
+    
+
