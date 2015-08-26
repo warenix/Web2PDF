@@ -1,0 +1,12 @@
+<resources>
+
+    <dimen name="short_a4">105dp</dimen>
+    <dimen name="long_a4">140dp</dimen>
+    <dimen name="short_a3">140dp</dimen>
+    <dimen name="long_a3">216dp</dimen>
+    <dimen name="short_legal">216dp</dimen>
+    <dimen name="long_legal">178dp</dimen>
+    <dimen name="short_letter">108dp</dimen>
+    <dimen name="long_letter">140dp</dimen>
+
+</resources>

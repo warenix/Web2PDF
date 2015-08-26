@@ -1,0 +1,12 @@
+<resources>
+
+    <color name="app_color">#d2995d</color>
+    <!--  -->
+    <color name="paper_border">#aa207d94</color>
+    <color name="paper_border_selected">#d2995d</color>
+    <color name="paper_color">#aaffffff</color>
+    <color name="paper_color_selected">#ffffffff</color>
+    <color name="label_color">#aa207d94</color>
+    <color name="label_color_selected">#d2995d</color>
+
+</resources>
