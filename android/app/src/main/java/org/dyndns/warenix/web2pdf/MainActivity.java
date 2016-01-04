@@ -277,11 +277,15 @@ public class MainActivity extends Activity {
             View view = null;
             if (mSelectedViewID != -1) {
                 view = findViewById(mSelectedViewID);
-                view.setSelected(false);
+                if (view != null) {
+                    view.setSelected(false);
+                }
             }
             mSelectedViewID = viewID;
             view = findViewById(mSelectedViewID);
-            view.setSelected(true);
+            if (view != null) {
+                view.setSelected(true);
+            }
         }
     }
 
