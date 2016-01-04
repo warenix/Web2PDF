@@ -17,7 +17,7 @@ public class Pdf {
         PORTRAIT, LANDSCAPE
     }
 
-    public static class ConvertService implements API.Request {
+    public static class ConvertService {
         private String mUrl;
         private PageSize mPageSize;
         private Orientation mOrientation;
@@ -56,6 +56,9 @@ public class Pdf {
         }
 
 
+        public String getUrl() {
+            return mUrl;
+        }
     }
 
     public static class ConvertResult implements API.Result {

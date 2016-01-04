@@ -1,63 +1,78 @@
 package org.dyndns.warenix.web2pdf.api;
 
-import android.util.Log;
+import android.support.v4.content.LocalBroadcastManager;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.ParseException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicHeader;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
+import org.dyndns.warenix.web2pdf.util.NetworkUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+
+import okhttp3.Interceptor;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Created by warenix on 3/21/15.
  */
 public class API {
     static final String URL = "http://web2pdf.warenix.app.sailabove.io:5000/pdf/convert";
+    private static final MediaType CONTENT_TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
+
+    private static OkHttpClient getOkHttpClient() {
+        final PdfServiceProgressListener progressListener = new PdfServiceProgressListener();
+
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addNetworkInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Pdf.ConvertService request = (Pdf.ConvertService) chain.request().tag();
+                        progressListener.setRequestId(request.getUrl());
+
+                        Response originalResponse = chain.proceed(chain.request());
+                        return originalResponse.newBuilder()
+                                .body(new NetworkUtil.ProgressResponseBody(originalResponse.body(), progressListener))
+                                .build();
+                    }
+                })
+                .build();
+        return okHttpClient;
+    }
 
     public static Result makeCall(Pdf.ConvertService request) throws IOException {
-        HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost(URL);
+        RequestBody requestBody = RequestBody.create(CONTENT_TYPE_JSON, request.toString());
 
-        StringEntity se = new StringEntity(request.toString());
-        se.setContentType("application/json;charset=UTF-8");
-        se.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json;charset=UTF-8"));
-        httppost.setEntity(se);
-        HttpResponse httpresponse = httpclient.execute(httppost);
-        String responseText = null;
-        try {
-            responseText = EntityUtils.toString(httpresponse.getEntity());
-            if (responseText != null) {
-                try {
-                    JSONObject json = new JSONObject(responseText);
-                    JSONObject resultJson = json.getJSONObject("result");
-                    Pdf.ConvertResult result = new Pdf.ConvertResult();
-                    result.result = new Pdf.ConvertResult.Result();
-                    result.result.pdf_url = resultJson.getString("pdf_url");
-                    result.result.url = resultJson.getString("url");
-                    return result;
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+        OkHttpClient okHttpClient = getOkHttpClient();
+        Request okRequest = new Request.Builder()
+                .tag(request)
+                .url(URL)
+                .post(requestBody)
+                .build();
 
+
+        Response response = okHttpClient.newCall(okRequest).execute();
+        String responseText = response.body().string();
+
+        if (responseText != null) {
+            try {
+                JSONObject json = new JSONObject(responseText);
+                JSONObject resultJson = json.getJSONObject("result");
+                Pdf.ConvertResult result = new Pdf.ConvertResult();
+                result.result = new Pdf.ConvertResult.Result();
+                result.result.pdf_url = resultJson.getString("pdf_url");
+                result.result.url = resultJson.getString("url");
+                return result;
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        } catch (ParseException e) {
-            e.printStackTrace();
-            Log.i("Parse Exception", e + "");
+
         }
 
         return null;
 
-    }
-
-    public interface Request {
     }
 
     public interface Result {
@@ -69,4 +84,22 @@ public class API {
     }
 
 
+    public static class PdfServiceProgressListener implements NetworkUtil.ProgressListener {
+        /**
+         * unique identifier for this download
+         */
+        private String mRequestId;
+
+        public void setRequestId(String requestId) {
+            mRequestId = requestId;
+        }
+
+        @Override
+        public void update(long bytesRead, long contentLength, boolean done) {
+            System.out.println(bytesRead);
+            System.out.println(contentLength);
+            System.out.println(done);
+            System.out.format("mRequestId[%s] %d%% done\n", mRequestId, (100 * bytesRead) / contentLength);
+        }
+    }
 }

@@ -93,8 +93,8 @@ public class Web2PDFIntentService extends IntentService {
                 showNotification(arg.url, result.getError());
                 return;
             }
-            // Log.d(TAG, "pdf_url:" + result.result.pdf_url);
-            // download pdf
+             Log.d(TAG, "pdf_url:" + result.result.pdf_url);
+            // download pdf using system download manager
             if (VERSION.SDK_INT >= VERSION_CODES.GINGERBREAD) {
                 // only for gingerbread and newer versions
                 downloadPDFUsingDownloadManager(arg, result);
