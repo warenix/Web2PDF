@@ -1,13 +1,12 @@
 package org.dyndns.warenix.web2pdf.api;
 
-import android.support.v4.content.LocalBroadcastManager;
-
 import org.dyndns.warenix.web2pdf.util.NetworkUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 
+import de.greenrobot.event.EventBus;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -83,6 +82,38 @@ public class API {
 
     }
 
+    public static class ProgressReport {
+        private final String mRequestId;
+        private long mBytesRead;
+        private long mContentLength;
+        private boolean mDone;
+
+        public ProgressReport(String requestId, long bytesRead, long contentLength, boolean done) {
+            mRequestId = requestId;
+            mBytesRead = bytesRead;
+            mContentLength = contentLength;
+            mDone = done;
+        }
+
+        public long getBytesRead() {
+            return mBytesRead;
+        }
+
+        public long getContentLength() {
+            return mContentLength;
+        }
+
+        public boolean isDone() {
+            return mDone;
+        }
+
+        public float getPercentageDone() {
+            if (mContentLength > 0) {
+                return (100 * mBytesRead) / mContentLength;
+            }
+            return 0;
+        }
+    }
 
     public static class PdfServiceProgressListener implements NetworkUtil.ProgressListener {
         /**
@@ -100,6 +131,8 @@ public class API {
             System.out.println(contentLength);
             System.out.println(done);
             System.out.format("mRequestId[%s] %d%% done\n", mRequestId, (100 * bytesRead) / contentLength);
+
+            EventBus.getDefault().post(new ProgressReport(mRequestId, bytesRead, contentLength, done));
         }
     }
 }

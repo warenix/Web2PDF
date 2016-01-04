@@ -18,10 +18,13 @@ import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.Toast;
 
+import org.dyndns.warenix.web2pdf.api.API;
 import org.dyndns.warenix.web2pdf.api.Pdf.Orientation;
 import org.dyndns.warenix.web2pdf.api.Pdf.PageSize;
 
 import java.util.Locale;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * The main activity accepts user configurations to convert a url to pdf. The pdf file is downloaded
@@ -118,6 +121,8 @@ public class MainActivity extends Activity {
         ed.putInt(PREF_KEY_SIZE, mSize);
         ed.putInt(PREF_KEY_ORIENTATION, mOrientation);
         ed.commit();
+
+        EventBus.getDefault().unregister(this);
     }
 
     public void onSizeSelected(int id) {
@@ -309,5 +314,24 @@ public class MainActivity extends Activity {
             super.setSelect(viewID);
             onOrientationSelected(viewID);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        EventBus.getDefault().register(this);
+    }
+
+
+    Toast mToast;
+
+    public void onEventMainThread(API.ProgressReport progressReport) {
+        if (mToast != null) {
+            mToast.cancel();
+        }
+        mToast = Toast.makeText(getApplicationContext(), String.format("downloaed [%.2f]%%", progressReport.getPercentageDone()),
+                Toast.LENGTH_SHORT);
+        mToast.show();
     }
 }
