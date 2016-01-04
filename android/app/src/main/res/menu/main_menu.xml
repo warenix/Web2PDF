@@ -6,4 +6,8 @@
         android:showAsAction="ifRoom|withText"
         android:title="Convert" />
 
+    <item
+        android:id="@+id/action_file_manager"
+        android:showAsAction="ifRoom|withText"
+        android:title="File Manager" />
 </menu>

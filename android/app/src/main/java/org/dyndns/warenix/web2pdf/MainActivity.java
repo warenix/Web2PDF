@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -34,7 +35,7 @@ import de.greenrobot.event.EventBus;
  * @author warenix
  */
 @TargetApi(VERSION_CODES.GINGERBREAD)
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     /**
@@ -185,8 +186,21 @@ public class MainActivity extends Activity {
                 convertNow();
                 return true;
             }
+            case R.id.action_file_manager: {
+                showFileManager();
+                return true;
+            }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showFileManager() {
+        FileManagerFragment f = FileManagerFragment.newInstance();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.content_frame, f, FileManagerFragment.class.getSimpleName())
+                .addToBackStack(FileManagerFragment.class.getSimpleName())
+                .commit();
     }
 
     /**

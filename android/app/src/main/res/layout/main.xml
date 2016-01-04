@@ -1,60 +1,71 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <TextView
-            style="@style/FormLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Convert this url" />
-
-        <EditText
-            android:id="@+id/url"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="e.g. http://google.com"
-            android:inputType="textUri" />
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/filenameLabel"
-            style="@style/FormLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Rename file as" />
+            <TextView
+                style="@style/FormLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Convert this url" />
 
-        <EditText
-            android:id="@+id/filename"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="e.g. google.com.pdf"
-            android:inputType="textUri" />
+            <EditText
+                android:id="@+id/url"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="e.g. http://google.com"
+                android:inputType="textUri" />
 
-        <TextView
-            style="@style/FormLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Paper Size" />
+            <TextView
+                android:id="@+id/filenameLabel"
+                style="@style/FormLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rename file as" />
 
-        <include
-            android:id="@+id/size_scroller"
-            layout="@layout/size_list" />
+            <EditText
+                android:id="@+id/filename"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="e.g. google.com.pdf"
+                android:inputType="textUri" />
 
-        <TextView
-            style="@style/FormLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Orientation" />
+            <TextView
+                style="@style/FormLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Paper Size" />
 
-        <include
-            android:id="@+id/orientation_scroller"
-            layout="@layout/orientation_list" />
-    </LinearLayout>
+            <include
+                android:id="@+id/size_scroller"
+                layout="@layout/size_list" />
 
-</ScrollView>
+            <TextView
+                style="@style/FormLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Orientation" />
+
+            <include
+                android:id="@+id/orientation_scroller"
+                layout="@layout/orientation_list" />
+        </LinearLayout>
+
+    </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/background_dark" />
+</FrameLayout>
