@@ -4,6 +4,7 @@ import json
 import os, base64, hashlib
 import pdfkit
 import sys
+import traceback
 
 class ServicePdfHandler(BaseServiceHandler):
     services = ['convert','remove']
@@ -47,7 +48,7 @@ class ServicePdfHandler(BaseServiceHandler):
 
 
             here = os.path.dirname(os.path.realpath(__file__))
-            wkhtmltopdf_exe = '%s/../../wkhtmltopdf' % here
+            wkhtmltopdf_exe = '%s/../wkhtmltopdf' % here
             out_file='%s/../static/pdfout/%s.pdf' % (here, filename)
             print 'using wkhtmltopdf located at [%s]' % wkhtmltopdf_exe
 
@@ -61,7 +62,7 @@ class ServicePdfHandler(BaseServiceHandler):
                 pdfkit.from_url(url_quote, out_file, options=options, configuration=config)
                 print 'done'
                 pdf_local_url = 'http://%s/pdfout/%s.pdf' % (
-                        os.environ['OPENSHIFT_APP_DNS'],
+                        os.getenv('OPENSHIFT_APP_DNS', '%s' % (request.host)),
                         filename
                         )
                 result = {
@@ -72,6 +73,7 @@ class ServicePdfHandler(BaseServiceHandler):
             except:
                 e = sys.exc_info()[0]
                 print "Unexpected error", str(e)
+                traceback.print_exc()
                 self.set_result(str(e), 500)
         elif service == 'remove':
             j = self.get_json_param(request)
