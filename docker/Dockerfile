@@ -24,5 +24,5 @@ ADD Web2PDF-api Web2PDF-api
 WORKDIR Web2PDF-api
 
 RUN python setup.py develop
-EXPOSE 5000
-ENTRYPOINT ["python", "wsgi/app.py"]
+EXPOSE 8080
+ENTRYPOINT ["python", "app.py"]

@@ -1,8 +1,9 @@
 #!/usr/bin/python
 from flask import Flask, request, jsonify, url_for, render_template
 import settings
+import os
 
-app = Flask(__name__, static_folder='static', static_url_path='')
+app = Flask(__name__, static_folder='static', static_url_path='') 
 
 @app.route('/')
 def hello_world():
@@ -36,5 +37,17 @@ def not_found(error):
         return jsonify(error=error.message)
 
 
+@app.route('/app/moliu/mission/<object_id>')
+def moliu_mission_details(object_id):
+    return render_template('mission.html',
+            object_id=object_id, about='Mission details')
+
+@app.route('/app/moliu/missions')
+def moliu_mission_list():
+    return render_template('mission_list.html',
+            about='All missions')
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    ip   = os.environ.get('OPENSHIFT_PYTHON_IP', '0.0.0.0')
+    port = int(os.environ.get('OPENSHIFT_PYTHON_PORT', '8080'))
+    app.run(host=ip, port=port, debug=True)
