@@ -1,12 +1,12 @@
 package org.dyndns.warenix.web2pdf.api;
 
 import org.dyndns.warenix.web2pdf.util.NetworkUtil;
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 
-import de.greenrobot.event.EventBus;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;

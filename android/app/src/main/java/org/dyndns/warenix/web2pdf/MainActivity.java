@@ -22,10 +22,10 @@ import android.widget.Toast;
 import org.dyndns.warenix.web2pdf.api.API;
 import org.dyndns.warenix.web2pdf.api.Pdf.Orientation;
 import org.dyndns.warenix.web2pdf.api.Pdf.PageSize;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Locale;
-
-import de.greenrobot.event.EventBus;
 
 /**
  * The main activity accepts user configurations to convert a url to pdf. The pdf file is downloaded
@@ -344,6 +344,7 @@ public class MainActivity extends AppCompatActivity {
 
     Toast mToast;
 
+    @Subscribe
     public void onEventMainThread(API.ProgressReport progressReport) {
         if (mToast != null) {
             mToast.cancel();
