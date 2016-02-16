@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
     private int mOrientation;
     private SharedPreferences mPrefs;
     private int PADDING = 16;
+    private View mContentFrame;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -112,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
         }
         mSizeOnClickListener.setSelect(mSize);
         mOrientationOnClickListener.setSelect(mOrientation);
+
+        mContentFrame = findViewById(R.id.content_frame);
     }
 
 
@@ -187,7 +190,15 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
             case R.id.action_file_manager: {
+                mContentFrame.setVisibility(View.VISIBLE);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 showFileManager();
+                return true;
+            }
+            case android.R.id.home:
+            case R.id.home:
+            case R.id.homeAsUp: {
+                onBackPressed();
                 return true;
             }
         }
@@ -353,4 +364,14 @@ public class MainActivity extends AppCompatActivity {
                 Toast.LENGTH_SHORT);
         mToast.show();
     }
+
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            mContentFrame.setVisibility(View.INVISIBLE);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
+        super.onBackPressed();
+    }
+
 }
