@@ -5,9 +5,9 @@ This repository contains **Dockerfile** of [Web2PDF](https://play.google.com/sto
 
 ## Docker image
 
-Latest docker image is built and hosted on [quay.io](https://quay.io). You can pull one by:
+Latest docker image is built and hosted on [docker hub](https://hub.docker.com/r/warenix/web2pdf/). You can pull one by:
 ```sh
-docker pull quay.io/warenix/web2pdf:latest
+docker pull warenix/web2pdf:latest
 ```
 
 
@@ -35,7 +35,7 @@ docker pull quay.io/warenix/web2pdf:latest
     docker-compose up
     ```
 
-    After few seconds, open http://localhost:5000 to see the api server is up and running.
+    After few seconds, open [localhost](http://localhost:8080) to see the api server is up and running.
 
 0. Test pdf conversion service is up
     
@@ -48,7 +48,7 @@ docker pull quay.io/warenix/web2pdf:latest
     ```json
     {
         "result": {
-            "pdf_url": "http://localhost:5000/pdfout/yv2iWaQOLPN.pdf",
+            "pdf_url": "http://localhost:8080/pdfout/yv2iWaQOLPN.pdf",
             "url": "http://hk.yahoo.com"
         }
     } 
