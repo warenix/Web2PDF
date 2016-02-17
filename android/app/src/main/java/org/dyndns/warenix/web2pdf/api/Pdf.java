@@ -66,7 +66,7 @@ public class Pdf {
         public Result result;
 
         @Override
-        public API.Error getError() {
+        public Exception getError() {
             return null;
         }
 

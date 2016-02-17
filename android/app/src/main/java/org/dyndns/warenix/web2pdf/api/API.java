@@ -75,11 +75,7 @@ public class API {
     }
 
     public interface Result {
-        public Error getError();
-    }
-
-    public interface Error {
-
+        Exception getError();
     }
 
     public static class ProgressReport {

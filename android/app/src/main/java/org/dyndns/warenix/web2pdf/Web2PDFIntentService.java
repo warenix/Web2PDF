@@ -93,7 +93,7 @@ public class Web2PDFIntentService extends IntentService {
                 showNotification(arg.url, result.getError());
                 return;
             }
-             Log.d(TAG, "pdf_url:" + result.result.pdf_url);
+            Log.d(TAG, "pdf_url:" + result.result.pdf_url);
             // download pdf using system download manager
             if (VERSION.SDK_INT >= VERSION_CODES.GINGERBREAD) {
                 // only for gingerbread and newer versions
@@ -103,17 +103,24 @@ public class Web2PDFIntentService extends IntentService {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            showNotification(arg.url, null);
+            showNotification(arg.url, e);
         }
     }
 
-    private void showNotification(String url, API.Error error) {
+    private void showNotification(String url, Exception e) {
         // generate notification
-        String notificationText = "";
+        String notificationText = e == null ? "error" : e.getMessage();
+        NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle();
+        style.bigText(notificationText);
         mNotification =
-                new NotificationCompat.Builder(getApplicationContext()).setContentTitle(url)
-                        .setContentText(notificationText).setTicker("error").setWhen(System.currentTimeMillis())
-                        .setAutoCancel(true).setSmallIcon(R.drawable.ic_launcher).build();
+                new NotificationCompat.Builder(getApplicationContext())
+                        .setStyle(style)
+                        .setContentTitle(url)
+                        .setTicker(e == null ? "error" : e.getMessage())
+                        .setWhen(System.currentTimeMillis())
+                        .setAutoCancel(true)
+                        .setSmallIcon(R.drawable.ic_launcher)
+                        .build();
 
         mNotificationManager.notify(ERROR_NOTIFICATION_ID, mNotification);
     }
