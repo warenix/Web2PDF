@@ -16,8 +16,7 @@ import org.dyndns.warenix.web2pdf.model.FileItem;
  * Created by warenix on 1/4/16.
  */
 public class FileItemViewHolder extends RecyclerView.ViewHolder {
-    private final TextView mTitleView;
-    private final TextView mDateAddedView;
+    FileItemView mFileItemView;
     private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -29,7 +28,6 @@ public class FileItemViewHolder extends RecyclerView.ViewHolder {
             }
         }
     };
-    private TextView mDirectoryView;
     private FileItem mFileItem;
 
     public static FileItemViewHolder newInstance(ViewGroup parent) {
@@ -43,18 +41,16 @@ public class FileItemViewHolder extends RecyclerView.ViewHolder {
     public FileItemViewHolder(View itemView) {
         super(itemView);
 
-        mTitleView = (TextView) itemView.findViewById(R.id.file_item_title);
-        mDateAddedView = (TextView) itemView.findViewById(R.id.file_item_date_added);
-        mDirectoryView = (TextView) itemView.findViewById(R.id.file_item_directory);
+        mFileItemView = (FileItemView) itemView.findViewById(R.id.file_item);
         itemView.setOnClickListener(mOnClickListener);
     }
 
     public void bindView(FileItem fileItem) {
         if (fileItem != null) {
             mFileItem = fileItem;
-            mTitleView.setText(fileItem.getTitle());
-            mDateAddedView.setText(DateUtils.getRelativeTimeSpanString(fileItem.getDateAdded() * 1000));
-            mDirectoryView.setText(fileItem.getDirectory());
+            mFileItemView.setTitle(fileItem.getTitle());
+//            mFileItemView.setDateAdded(DateUtils.getRelativeTimeSpanString(fileItem.getDateAdded() * 1000));
+//            mFileItemView.setDirectory(fileItem.getDirectory());
         }
     }
 }
