@@ -5,6 +5,7 @@ import os, base64, hashlib
 import pdfkit
 import sys
 import traceback
+import urlparse
 
 class ServicePdfHandler(BaseServiceHandler):
     services = ['convert','remove']
@@ -61,10 +62,12 @@ class ServicePdfHandler(BaseServiceHandler):
                 print 'storing at [%s]' % out_file
                 pdfkit.from_url(url_quote, out_file, options=options, configuration=config)
                 print 'done'
-                pdf_local_url = 'http://%s/pdfout/%s.pdf' % (
-                        os.getenv('OPENSHIFT_APP_DNS', '%s' % (request.host)),
-                        filename
-                        )
+                parts = urlparse.urlparse(request.url)
+                pdf_local_url = ('%s://%s/pdfout/%s.pdf' % (
+                    parts.scheme,
+                    os.getenv('OPENSHIFT_APP_DNS', '%s' % (request.host)),
+                    filename
+                ))
                 result = {
                         'url':url,
                         'pdf_url':pdf_local_url
