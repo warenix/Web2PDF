@@ -33,6 +33,14 @@ public class FileManagerAdapter extends RecyclerView.Adapter<FileItemViewHolder>
         }
     }
 
+    public FileItem getData(int position) {
+        if (mCursor != null && mCursor.moveToPosition(position)) {
+            FileItem fileItem = FileItem.load(mCursor);
+            return fileItem;
+        }
+        return null;
+    }
+
     @Override
     public int getItemCount() {
         return mCursor == null ? 0 : mCursor.getCount();

@@ -15,7 +15,6 @@ public class FileItemView extends LinearLayout {
     private final TextView mTitleView;
     private final TextView mDateAddedView;
     private final TextView mDirectoryView;
-    private OnClickListener mOnClickListener;
 
     public FileItemView(Context context) {
         this(context, null);
@@ -33,14 +32,8 @@ public class FileItemView extends LinearLayout {
         mDirectoryView = (TextView) findViewById(R.id.file_item_directory);
     }
 
-
-    public void setOnClickListener(OnClickListener l) {
-        mOnClickListener = l;
-        setOnClickListener(l);
-    }
-
     public void setTitle(CharSequence title) {
-//        mTitleView.setText(title);
+        mTitleView.setText(title);
     }
 
     public void setDateAdded(CharSequence dateAdded) {

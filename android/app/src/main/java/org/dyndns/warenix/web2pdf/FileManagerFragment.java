@@ -1,5 +1,6 @@
 package org.dyndns.warenix.web2pdf;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,12 +14,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 
 import org.dyndns.warenix.web2pdf.model.FileItem;
 import org.dyndns.warenix.web2pdf.view.FileManagerAdapter;
+import org.dyndns.warenix.web2pdf.view.OnRecyclerItemClickListener;
 
 /**
  * Created by warenix on 1/4/16.
@@ -45,7 +48,7 @@ public class FileManagerFragment extends Fragment implements LoaderManager.Loade
         String selectionMimeType = MediaStore.Files.FileColumns.MIME_TYPE + "=?";
         String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension("pdf");
         String[] selectionArgsPdf = new String[]{mimeType};
-        String sortOrder =  MediaStore.Files.FileColumns.DATE_ADDED + " desc";
+        String sortOrder = MediaStore.Files.FileColumns.DATE_ADDED + " desc";
 
         Uri uri = MediaStore.Files.getContentUri("external");
         return new CursorLoader(getContext(), uri, projection, selectionMimeType, selectionArgsPdf, sortOrder);
@@ -82,6 +85,23 @@ public class FileManagerFragment extends Fragment implements LoaderManager.Loade
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter = new FileManagerAdapter();
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addOnItemTouchListener(new OnRecyclerItemClickListener(mRecyclerView) {
+
+            @Override
+            protected void onLongClick(RecyclerView.ViewHolder vh) {
+
+            }
+
+            @Override
+            public void onItemClick(RecyclerView.ViewHolder vh) {
+                Log.d(TAG, "click " + vh.toString());
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
+                FileItem fileItem = mAdapter.getData(vh.getAdapterPosition());
+                intent.setDataAndType(fileItem.getData(), "application/pdf");
+                startActivity(intent);
+            }
+        });
         return rootView;
     }
 }

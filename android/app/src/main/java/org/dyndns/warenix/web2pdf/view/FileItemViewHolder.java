@@ -1,13 +1,11 @@
 package org.dyndns.warenix.web2pdf.view;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import org.dyndns.warenix.web2pdf.R;
 import org.dyndns.warenix.web2pdf.model.FileItem;
@@ -16,18 +14,20 @@ import org.dyndns.warenix.web2pdf.model.FileItem;
  * Created by warenix on 1/4/16.
  */
 public class FileItemViewHolder extends RecyclerView.ViewHolder {
+    private static final String TAG = FileItemViewHolder.class.getSimpleName();
     FileItemView mFileItemView;
-    private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (mFileItem != null) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
-                intent.setDataAndType(mFileItem.getData(), "application/pdf");
-                v.getContext().startActivity(intent);
-            }
-        }
-    };
+    //    private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            Log.d(TAG, "onClick() " + mFileItem);
+//            if (mFileItem != null) {
+//                Intent intent = new Intent(Intent.ACTION_VIEW);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
+//                intent.setDataAndType(mFileItem.getData(), "application/pdf");
+//                v.getContext().startActivity(intent);
+//            }
+//        }
+//    };
     private FileItem mFileItem;
 
     public static FileItemViewHolder newInstance(ViewGroup parent) {
@@ -40,17 +40,15 @@ public class FileItemViewHolder extends RecyclerView.ViewHolder {
 
     public FileItemViewHolder(View itemView) {
         super(itemView);
-
         mFileItemView = (FileItemView) itemView.findViewById(R.id.file_item);
-        itemView.setOnClickListener(mOnClickListener);
     }
 
     public void bindView(FileItem fileItem) {
         if (fileItem != null) {
             mFileItem = fileItem;
             mFileItemView.setTitle(fileItem.getTitle());
-//            mFileItemView.setDateAdded(DateUtils.getRelativeTimeSpanString(fileItem.getDateAdded() * 1000));
-//            mFileItemView.setDirectory(fileItem.getDirectory());
+            mFileItemView.setDateAdded(DateUtils.getRelativeTimeSpanString(fileItem.getDateAdded() * 1000));
+            mFileItemView.setDirectory(fileItem.getDirectory());
         }
     }
 }

@@ -2,4 +2,4 @@
 <org.dyndns.warenix.web2pdf.view.FileItemView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/file_item"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="wrap_content" />
