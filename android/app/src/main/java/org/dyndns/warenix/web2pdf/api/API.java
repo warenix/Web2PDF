@@ -18,7 +18,7 @@ import okhttp3.Response;
  * Created by warenix on 3/21/15.
  */
 public class API {
-    static final String URL = "http://exp-warenix.rhcloud.com/pdf/convert";
+    static final String URL = "https://warenix-web2pdf.arukascloud.io/pdf/convert";
     private static final MediaType CONTENT_TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
 
     private static OkHttpClient getOkHttpClient() {

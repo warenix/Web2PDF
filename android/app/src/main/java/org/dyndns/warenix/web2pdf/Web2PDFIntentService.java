@@ -133,7 +133,8 @@ public class Web2PDFIntentService extends IntentService {
      * @param result
      */
     private void downloadPDFUsingBrowser(Web2PDFArgument arg, ConvertResult result) {
-        Intent viewIntent = new Intent("android.intent.action.VIEW", Uri.parse(result.result.pdf_url));
+        String httpsDownloadUrl = result.result.pdf_url.replace("http", "https");
+        Intent viewIntent = new Intent("android.intent.action.VIEW", Uri.parse(httpsDownloadUrl));
         viewIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(viewIntent);
     }
@@ -148,7 +149,8 @@ public class Web2PDFIntentService extends IntentService {
     @SuppressWarnings("deprecation")
     @TargetApi(VERSION_CODES.HONEYCOMB)
     private void downloadPDFUsingDownloadManager(Web2PDFArgument arg, ConvertResult result) {
-        DownloadManager.Request down = new DownloadManager.Request(Uri.parse(result.result.pdf_url));
+        String httpsDownloadUrl = result.result.pdf_url.replace("http", "https");
+        DownloadManager.Request down = new DownloadManager.Request(Uri.parse(httpsDownloadUrl));
         down.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE
                 | DownloadManager.Request.NETWORK_WIFI);
         down.setVisibleInDownloadsUi(true);
