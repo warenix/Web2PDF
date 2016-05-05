@@ -5,6 +5,7 @@ import android.app.DownloadManager;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -20,6 +21,7 @@ import org.dyndns.warenix.web2pdf.api.Pdf;
 import org.dyndns.warenix.web2pdf.api.Pdf.ConvertResult;
 
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Backend service to talk to Web2PDF API
@@ -37,7 +39,7 @@ public class Web2PDFIntentService extends IntentService {
      */
     private static final int ERROR_NOTIFICATION_ID = 1;
     NotificationManager mNotificationManager;
-    Notification mNotification;
+    static AtomicInteger sNextNotificationId = new AtomicInteger(0);
 
     public Web2PDFIntentService() {
         super("Web2PDFIntentService");
@@ -110,19 +112,21 @@ public class Web2PDFIntentService extends IntentService {
     private void showNotification(String url, Exception e) {
         // generate notification
         String notificationText = e == null ? "error" : e.getMessage();
-        NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle();
-        style.bigText(notificationText);
-        mNotification =
-                new NotificationCompat.Builder(getApplicationContext())
-                        .setStyle(style)
-                        .setContentTitle(url)
-                        .setTicker(e == null ? "error" : e.getMessage())
-                        .setWhen(System.currentTimeMillis())
-                        .setAutoCancel(true)
-                        .setSmallIcon(R.drawable.ic_launcher)
-                        .build();
+        showNotification(this, url, notificationText);
+    }
 
-        mNotificationManager.notify(ERROR_NOTIFICATION_ID, mNotification);
+    public static void showNotification(Context context, String title, String message) {
+        Notification notif = new NotificationCompat.Builder(context)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setSmallIcon(R.drawable.ic_launcher)
+//                .setLargeIcon(aBitmap)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(message))
+                .build();
+        notif.defaults |= Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE;
+        NotificationManager nm = (NotificationManager) context.getSystemService(Service.NOTIFICATION_SERVICE);
+        nm.notify(sNextNotificationId.getAndIncrement(), notif);
     }
 
     /**

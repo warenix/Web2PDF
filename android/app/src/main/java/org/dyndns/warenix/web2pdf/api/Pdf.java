@@ -64,16 +64,18 @@ public class Pdf {
     public static class ConvertResult implements API.Result {
 
         public Result result;
+        public Exception error;
 
         @Override
         public Exception getError() {
-            return null;
+            return error;
         }
 
         public static class Result {
             public String url;
             public String pdf_url;
         }
+
     }
 
     public static String pageSizeToString(PageSize pageSize) {

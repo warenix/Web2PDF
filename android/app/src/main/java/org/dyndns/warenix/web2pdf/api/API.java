@@ -58,6 +58,11 @@ public class API {
         if (responseText != null) {
             try {
                 JSONObject json = new JSONObject(responseText);
+                if (json.has("error")) {
+                    Pdf.ConvertResult result = new Pdf.ConvertResult();
+                    result.error = new Exception(json.getString("error"));
+                    return result;
+                }
                 JSONObject resultJson = json.getJSONObject("result");
                 Pdf.ConvertResult result = new Pdf.ConvertResult();
                 result.result = new Pdf.ConvertResult.Result();
