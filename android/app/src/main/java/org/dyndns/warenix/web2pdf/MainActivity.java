@@ -115,6 +115,9 @@ public class MainActivity extends AppCompatActivity {
         mOrientationOnClickListener.setSelect(mOrientation);
 
         mContentFrame = findViewById(R.id.content_frame);
+        if (savedInstanceState != null) {
+            mContentFrame.setVisibility(isFileManagerShown() ? View.VISIBLE : View.INVISIBLE);
+        }
     }
 
 
@@ -212,6 +215,11 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.content_frame, f, FileManagerFragment.class.getSimpleName())
                 .addToBackStack(FileManagerFragment.class.getSimpleName())
                 .commit();
+    }
+
+    private boolean isFileManagerShown() {
+        // assumed there's only one FileManagerFragment in the backstack
+        return getSupportFragmentManager().getBackStackEntryCount() > 0;
     }
 
     /**
