@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences mPrefs;
     private int PADDING = 16;
     private View mContentFrame;
+    private Menu mMenu;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -116,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
         mContentFrame = findViewById(R.id.content_frame);
         if (savedInstanceState != null) {
+            boolean isFileManagerShown = isFileManagerShown();
             mContentFrame.setVisibility(isFileManagerShown() ? View.VISIBLE : View.INVISIBLE);
         }
     }
@@ -182,6 +184,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
+        mMenu = menu;
+        updateToolBarMenus(isFileManagerShown());
         return true;
     }
 
@@ -194,8 +198,8 @@ public class MainActivity extends AppCompatActivity {
             }
             case R.id.action_file_manager: {
                 mContentFrame.setVisibility(View.VISIBLE);
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 showFileManager();
+                updateToolBarMenus(true);
                 return true;
             }
             case android.R.id.home:
@@ -220,6 +224,19 @@ public class MainActivity extends AppCompatActivity {
     private boolean isFileManagerShown() {
         // assumed there's only one FileManagerFragment in the backstack
         return getSupportFragmentManager().getBackStackEntryCount() > 0;
+    }
+
+    private void updateToolBarMenus(boolean isFileManagerShown) {
+        if (isFileManagerShown) {
+            mMenu.findItem(R.id.action_convert).setVisible(false);
+            mMenu.findItem(R.id.action_file_manager).setVisible(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        } else {
+            mMenu.findItem(R.id.action_convert).setVisible(true);
+            mMenu.findItem(R.id.action_file_manager).setVisible(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
+
     }
 
     /**
@@ -377,7 +394,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             mContentFrame.setVisibility(View.INVISIBLE);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            updateToolBarMenus(false);
         }
         super.onBackPressed();
     }
