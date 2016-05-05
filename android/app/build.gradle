@@ -8,8 +8,8 @@ android {
         applicationId "org.dyndns.warenix.web2pdf"
         minSdkVersion 11
         targetSdkVersion 22
-        versionCode 7
-        versionName "2.6"
+        versionCode 8
+        versionName "2.7"
     }
     buildTypes {
         release {
