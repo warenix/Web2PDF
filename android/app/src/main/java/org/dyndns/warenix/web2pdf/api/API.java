@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
@@ -45,6 +46,9 @@ public class API {
                         return originalResponse.newBuilder().build();
                     }
                 })
+                .readTimeout(1, TimeUnit.HOURS)
+                .writeTimeout(1, TimeUnit.HOURS)
+                .connectTimeout(1, TimeUnit.HOURS)
                 .build();
         return okHttpClient;
     }
