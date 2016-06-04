@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notif_title_download_failed">エラーが発生します</string>
+    <string name="notif_message_general_error">エラー</string>
+    <string name="label_convert_this_url">URLを変換します</string>
+    <string name="label_rename_file_as">ファイルの名前を変更</string>
+    <string name="label_pdf_option_orientation">用紙の向き</string>
+    <string name="label_pdf_option_paper_size">用紙サイズ</string>
+</resources>

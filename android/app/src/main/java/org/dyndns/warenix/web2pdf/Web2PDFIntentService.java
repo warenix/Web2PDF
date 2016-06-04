@@ -116,7 +116,7 @@ public class Web2PDFIntentService extends IntentService {
                 DownloadManager manager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
                 manager.addCompletedDownload(arg.filename, result.result.url, true, "application/pdf", downloadedFile.getAbsolutePath(), downloadedFile.length(), true);
             } else {
-                showNotification(context, "Downloaded failed", httpsDownloadUrl);
+                showNotification(context, getString(R.string.notif_title_download_failed), httpsDownloadUrl);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -126,7 +126,7 @@ public class Web2PDFIntentService extends IntentService {
 
     private void showNotification(String url, Exception e) {
         // generate notification
-        String notificationText = e == null ? "error" : e.getMessage();
+        String notificationText = e == null ? getString(R.string.notif_message_general_error) : e.getMessage();
         showNotification(this, url, notificationText);
     }
 

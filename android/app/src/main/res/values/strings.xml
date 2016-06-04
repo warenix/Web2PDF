@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Web2PDF</string>
+    <string name="app_name" translatable="false">Web2PDF</string>
+    <string name="notif_title_download_failed">Downloaded failed</string>
+    <string name="notif_message_general_error">error</string>
+    <string name="label_convert_this_url">Convert this url</string>
+    <string name="label_rename_file_as">Rename file as</string>
+    <string name="label_pdf_option_paper_size">Paper Size</string>
+    <string name="label_pdf_option_orientation">Orientation</string>
 </resources>

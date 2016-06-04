@@ -17,7 +17,7 @@
                 style="@style/FormLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Convert this url" />
+                android:text="@string/label_convert_this_url" />
 
             <EditText
                 android:id="@+id/url"
@@ -31,7 +31,7 @@
                 style="@style/FormLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rename file as" />
+                android:text="@string/label_rename_file_as" />
 
             <EditText
                 android:id="@+id/filename"
@@ -44,7 +44,7 @@
                 style="@style/FormLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Paper Size" />
+                android:text="@string/label_pdf_option_paper_size" />
 
             <include
                 android:id="@+id/size_scroller"
@@ -54,7 +54,7 @@
                 style="@style/FormLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Orientation" />
+                android:text="@string/label_pdf_option_orientation" />
 
             <include
                 android:id="@+id/orientation_scroller"
