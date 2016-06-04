@@ -1,6 +1,5 @@
 package org.dyndns.warenix.web2pdf;
 
-import android.annotation.TargetApi;
 import android.app.DownloadManager;
 import android.app.IntentService;
 import android.app.Notification;
@@ -8,9 +7,6 @@ import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
@@ -20,6 +16,7 @@ import org.dyndns.warenix.web2pdf.api.API;
 import org.dyndns.warenix.web2pdf.api.Pdf;
 import org.dyndns.warenix.web2pdf.api.Pdf.ConvertResult;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -96,16 +93,34 @@ public class Web2PDFIntentService extends IntentService {
                 return;
             }
             Log.d(TAG, "pdf_url:" + result.result.pdf_url);
-            // download pdf using system download manager
-            if (VERSION.SDK_INT >= VERSION_CODES.GINGERBREAD) {
-                // only for gingerbread and newer versions
-                downloadPDFUsingDownloadManager(arg, result);
-            } else {
-                downloadPDFUsingBrowser(arg, result);
-            }
+            downloadPDFUsingService(arg, result);
         } catch (IOException e) {
             e.printStackTrace();
             showNotification(arg.url, e);
+        }
+    }
+
+    private void downloadPDFUsingService(Web2PDFArgument arg, ConvertResult result) {
+        String httpsDownloadUrl = result.result.pdf_url.replace("http", "https");
+
+        final Context context = getApplicationContext();
+        File folder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        if (!folder.exists() || !folder.isDirectory()) {
+            folder.mkdirs();
+        }
+
+        File downloadedFile = new File(folder, arg.filename);
+        try {
+            boolean success = API.downloadFile(httpsDownloadUrl, downloadedFile);
+            if (success) {
+                DownloadManager manager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+                manager.addCompletedDownload(arg.filename, result.result.url, true, "application/pdf", downloadedFile.getAbsolutePath(), downloadedFile.length(), true);
+            } else {
+                showNotification(context, "Downloaded failed", httpsDownloadUrl);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            showNotification(result.result.pdf_url, e);
         }
     }
 
@@ -127,50 +142,5 @@ public class Web2PDFIntentService extends IntentService {
         notif.defaults |= Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE;
         NotificationManager nm = (NotificationManager) context.getSystemService(Service.NOTIFICATION_SERVICE);
         nm.notify(sNextNotificationId.getAndIncrement(), notif);
-    }
-
-    /**
-     * for device having older version than {@link VERSION_CODES#GINGERBREAD}, use device system
-     * browser to open the generated pdf
-     *
-     * @param arg
-     * @param result
-     */
-    private void downloadPDFUsingBrowser(Web2PDFArgument arg, ConvertResult result) {
-        String httpsDownloadUrl = result.result.pdf_url.replace("http", "https");
-        Intent viewIntent = new Intent("android.intent.action.VIEW", Uri.parse(httpsDownloadUrl));
-        viewIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(viewIntent);
-    }
-
-    /**
-     * for device having newer version than {@link VERSION_CODES#GINGERBREAD}, use
-     * {@link DownloadManager} to download the generated pdf
-     *
-     * @param arg
-     * @param result
-     */
-    @SuppressWarnings("deprecation")
-    @TargetApi(VERSION_CODES.HONEYCOMB)
-    private void downloadPDFUsingDownloadManager(Web2PDFArgument arg, ConvertResult result) {
-        String httpsDownloadUrl = result.result.pdf_url.replace("http", "https");
-        DownloadManager.Request down = new DownloadManager.Request(Uri.parse(httpsDownloadUrl));
-        down.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE
-                | DownloadManager.Request.NETWORK_WIFI);
-        down.setVisibleInDownloadsUi(true);
-        if (VERSION.SDK_INT < VERSION_CODES.HONEYCOMB) {
-            down.setShowRunningNotification(true);
-        } else {
-            if (VERSION.SDK_INT > VERSION_CODES.HONEYCOMB_MR2) {
-                down.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-            } else {
-                down.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
-            }
-        }
-
-        down.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, arg.filename);
-
-        DownloadManager manager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-        manager.enqueue(down);
     }
 }

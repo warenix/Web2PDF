@@ -5,6 +5,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -13,6 +15,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okio.BufferedSink;
+import okio.Okio;
 
 /**
  * Created by warenix on 3/21/15.
@@ -28,13 +32,17 @@ public class API {
                 .addNetworkInterceptor(new Interceptor() {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
-                        Pdf.ConvertService request = (Pdf.ConvertService) chain.request().tag();
-                        progressListener.setRequestId(request.getUrl());
+                        if (chain.request().tag() instanceof Pdf.ConvertService) {
+                            Pdf.ConvertService request = (Pdf.ConvertService) chain.request().tag();
+                            progressListener.setRequestId(request.getUrl());
 
+                            Response originalResponse = chain.proceed(chain.request());
+                            return originalResponse.newBuilder()
+                                    .body(new NetworkUtil.ProgressResponseBody(originalResponse.body(), progressListener))
+                                    .build();
+                        }
                         Response originalResponse = chain.proceed(chain.request());
-                        return originalResponse.newBuilder()
-                                .body(new NetworkUtil.ProgressResponseBody(originalResponse.body(), progressListener))
-                                .build();
+                        return originalResponse.newBuilder().build();
                     }
                 })
                 .build();
@@ -77,6 +85,26 @@ public class API {
 
         return null;
 
+    }
+
+    public static boolean downloadFile(String url, File downloadedFile) throws IOException {
+
+        Request okRequest = new Request.Builder()
+                .url(url)
+                .build();
+        OkHttpClient okHttpClient = getOkHttpClient();
+        Response response = okHttpClient.newCall(okRequest).execute();
+
+        BufferedSink sink = null;
+        try {
+            sink = Okio.buffer(Okio.sink(downloadedFile));
+            sink.writeAll(response.body().source());
+            sink.close();
+            return true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public interface Result {
