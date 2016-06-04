@@ -6,4 +6,6 @@
     <string name="label_rename_file_as">ファイルの名前を変更</string>
     <string name="label_pdf_option_orientation">用紙の向き</string>
     <string name="label_pdf_option_paper_size">用紙サイズ</string>
+    <string name="menu_option_convert">変換</string>
+    <string name="menu_option_file_manager">ファイルマネージャー</string>
 </resources>

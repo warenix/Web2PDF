@@ -4,11 +4,11 @@
 
     <item
         android:id="@+id/action_convert"
-        android:title="Convert"
+        android:title="@string/menu_option_convert"
         app:showAsAction="ifRoom|withText" />
 
     <item
         android:id="@+id/action_file_manager"
-        android:title="File Manager"
+        android:title="@string/menu_option_file_manager"
         app:showAsAction="ifRoom|withText" />
 </menu>

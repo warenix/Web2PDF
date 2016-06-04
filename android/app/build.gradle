@@ -6,10 +6,10 @@ android {
 
     defaultConfig {
         applicationId "org.dyndns.warenix.web2pdf"
-        minSdkVersion 11
+        minSdkVersion 12
         targetSdkVersion 22
-        versionCode 8
-        versionName "2.7"
+        versionCode 9
+        versionName "2.8"
     }
     buildTypes {
         release {
