@@ -6,9 +6,10 @@ import pdfkit
 import sys
 import traceback
 import urlparse
+import time
 
 class ServicePdfHandler(BaseServiceHandler):
-    services = ['convert','remove']
+    services = ['convert','remove', 'clean']
 
     def process_request(self, request, service):
         if service == 'convert':
@@ -87,6 +88,19 @@ class ServicePdfHandler(BaseServiceHandler):
             print 'delete %s' % out_file
             os.remove(out_file)
             self.set_result(filename, 200)
+        elif service == 'clean':
+            keep_alive_sec = 15*60
+            here = os.path.dirname(os.path.realpath(__file__))
+            pdfout_dir ='%s/../static/pdfout' % (here)
+            _dir = pdfout_dir
+            files = (fle for rt, _, f in os.walk(_dir) for fle in f if time.time() - os.stat(
+                    os.path.join(rt, fle)).st_mtime > keep_alive_sec )
+
+            for f in files:
+                os.remove(os.path.join(pdfout_dir, f))
+
+            self.set_result(True, 200)
+
 
 
     def hash_url(self, url):
