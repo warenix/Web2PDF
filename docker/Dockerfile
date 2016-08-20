@@ -18,6 +18,8 @@ RUN apt-get install -y ttf-wqy-microhei fonts-indic
 # 0. setup python-2.7
 RUN apt-get -y install python-pip
 
+# 0. gunicorn
+RUN apt-get -y install gunicorn
 
 RUN useradd -ms /bin/bash web2pdf
 
@@ -31,5 +33,5 @@ RUN python setup.py develop
 
 EXPOSE 8080
 USER web2pdf
-ENTRYPOINT ["python", "app.py"]
+ENTRYPOINT ["gunicorn", "-b :8080", "-w 4", "app:app"]
 
