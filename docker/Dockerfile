@@ -28,7 +28,7 @@ ADD Web2PDF-api /app
 WORKDIR /app
 
 
-RUN chown web2pdf:web2pdf /app
+RUN chown -R web2pdf:web2pdf /app
 RUN python setup.py develop
 
 EXPOSE 8080
