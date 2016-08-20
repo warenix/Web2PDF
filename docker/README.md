@@ -13,7 +13,11 @@ docker pull warenix/web2pdf:latest
 
 ### Base Docker Image
 
-* [dockerfile/ubuntu:14.04](http://dockerfile.github.io/#/ubuntu)
+* [dockerfile/ubuntu:16.04](http://dockerfile.github.io/#/ubuntu)
+
+
+### app root
+Application code is placed at `/app`
 
 
 ### Installation

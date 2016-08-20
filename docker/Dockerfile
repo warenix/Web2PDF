@@ -18,11 +18,18 @@ RUN apt-get install -y ttf-wqy-microhei fonts-indic
 # 0. setup python-2.7
 RUN apt-get -y install python-pip
 
-RUN echo pwd
-# 0. add app code
-ADD Web2PDF-api Web2PDF-api
-WORKDIR Web2PDF-api
 
+RUN useradd -ms /bin/bash web2pdf
+
+# 0. add app code
+ADD Web2PDF-api /app
+WORKDIR /app
+
+
+RUN chown web2pdf:web2pdf /app
 RUN python setup.py develop
+
 EXPOSE 8080
+USER web2pdf
 ENTRYPOINT ["python", "app.py"]
+
