@@ -1,4 +1,4 @@
-FROM ubuntu:14.04.3
+FROM ubuntu:16.04
 
 # install necessary tools for setup
 RUN apt-get update; apt-get install -y curl software-properties-common
@@ -13,7 +13,7 @@ libxau6 libxcb1 libxdmcp6 libxext6 libxfont1 libxrender1\
  x11-common xfonts-base xfonts-encodings xfonts-utils xfonts-75dpi 
 
 # 0. fix chinese/japanese/hindi font problem
-RUN apt-get install -y ttf-wqy-microhei ttf-indic-fonts
+RUN apt-get install -y ttf-wqy-microhei fonts-indic
 
 # 0. setup python-2.7
 RUN apt-get -y install python-pip
