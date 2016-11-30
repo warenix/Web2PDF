@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notif_title_download_failed">Error al descargar</string>
+    <string name="notif_message_general_error">error</string>
+    <string name="label_convert_this_url">Convertir url</string>
+    <string name="label_rename_file_as">Cambiar el nombre del archivo como</string>
+    <string name="label_pdf_option_paper_size">Tamaño de papel</string>
+    <string name="label_pdf_option_orientation">Orientación</string>
+    <string name="menu_option_convert">Convertir</string>
+    <string name="menu_option_file_manager">Administrador de archivos</string>
+</resources>
