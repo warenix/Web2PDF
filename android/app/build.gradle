@@ -2,13 +2,21 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
         applicationId "org.dyndns.warenix.web2pdf"
         minSdkVersion 12
+        targetSdkVersion 25
+        versionCode 12
+        versionName "2.10"
         jackOptions {
             enabled true
+        }
+    }
+    signingConfigs {
+        release {
+            v2SigningEnabled false
         }
     }
     buildTypes {
@@ -17,6 +25,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
+            applicationIdSuffix ".debug"
             minifyEnabled false
         }
     }
