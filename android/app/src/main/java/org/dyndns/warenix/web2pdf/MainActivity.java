@@ -1,5 +1,6 @@
 package org.dyndns.warenix.web2pdf;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DownloadManager;
@@ -9,7 +10,10 @@ import android.net.Uri;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,6 +31,13 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Locale;
 
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.OnShowRationale;
+import permissions.dispatcher.PermissionRequest;
+import permissions.dispatcher.RuntimePermissions;
+
 /**
  * The main activity accepts user configurations to convert a url to pdf. The pdf file is downloaded
  * by either: {@link DownloadManager} when the system verions is {@link VERSION_CODES#GINGERBREAD}
@@ -35,6 +46,7 @@ import java.util.Locale;
  * @author warenix
  */
 @TargetApi(VERSION_CODES.GINGERBREAD)
+@RuntimePermissions
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
@@ -52,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
      * stored the selected orientation view id, {@link #orientationIDs}
      */
     private static final String PREF_KEY_ORIENTATION = "orientation";
+    Toast mToast;
     private int[] sizeIDs = {R.id.a4, R.id.a3, R.id.legal, R.id.letter};
     private int[] orientationIDs = {R.id.portrait, R.id.landscape};
     private HorizontalScrollView mSizeHorizontalScrollView;
@@ -72,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
     private int PADDING = 16;
     private View mContentFrame;
     private Menu mMenu;
-
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,8 +132,43 @@ public class MainActivity extends AppCompatActivity {
             boolean isFileManagerShown = isFileManagerShown();
             mContentFrame.setVisibility(isFileManagerShown() ? View.VISIBLE : View.INVISIBLE);
         }
+
+        MainActivityPermissionsDispatcher.requestPermissionsIfNeededWithCheck(this);
     }
 
+    @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    void requestPermissionsIfNeeded() {
+
+    }
+
+    @OnShowRationale({Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    void showRationaleForRequestingPermission(final PermissionRequest request) {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.permission_write_external_rationale)
+                .setPositiveButton(R.string.permission_button_allow, (dialog, button) -> request.proceed())
+                .setNegativeButton(R.string.permission_button_deny, (dialog, button) -> {
+                    Log.d(TAG, "permission denied");
+                    request.cancel();
+                    requestPermissionsDenied();
+                })
+                .show();
+    }
+
+    @OnPermissionDenied({Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    void requestPermissionsDenied() {
+        // NOTE: Deal with a denied permission, e.g. by showing specific UI
+        // or disabling certain functionality
+        Toast.makeText(this, R.string.permission_write_external_denied, Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @OnNeverAskAgain({Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    void requestPermissionsNeverAskAgain() {
+        // NOTE: Deal with a denied permission, e.g. by showing specific UI
+        // or disabling certain functionality
+        Toast.makeText(this, R.string.permission_write_external_denied, Toast.LENGTH_SHORT).show();
+        finish();
+    }
 
     public void onPause() {
         super.onPause();
@@ -298,6 +345,39 @@ public class MainActivity extends AppCompatActivity {
         return null;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Subscribe
+    public void onEventMainThread(API.ProgressReport progressReport) {
+        if (mToast != null) {
+            mToast.cancel();
+        }
+        mToast = Toast.makeText(getApplicationContext(), String.format("downloaed [%.2f]%%", progressReport.getPercentageDone()),
+                Toast.LENGTH_SHORT);
+        mToast.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            mContentFrame.setVisibility(View.INVISIBLE);
+            updateToolBarMenus(false);
+        }
+        super.onBackPressed();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // NOTE: delegate the permission handling to generated method
+        MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
     /**
      * Set a view selected when it hasn't been selected, meanwhile deselect previously selected one.
      *
@@ -368,35 +448,6 @@ public class MainActivity extends AppCompatActivity {
             super.setSelect(viewID);
             onOrientationSelected(viewID);
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        EventBus.getDefault().register(this);
-    }
-
-
-    Toast mToast;
-
-    @Subscribe
-    public void onEventMainThread(API.ProgressReport progressReport) {
-        if (mToast != null) {
-            mToast.cancel();
-        }
-        mToast = Toast.makeText(getApplicationContext(), String.format("downloaed [%.2f]%%", progressReport.getPercentageDone()),
-                Toast.LENGTH_SHORT);
-        mToast.show();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            mContentFrame.setVisibility(View.INVISIBLE);
-            updateToolBarMenus(false);
-        }
-        super.onBackPressed();
     }
 
 }

@@ -7,9 +7,9 @@ android {
     defaultConfig {
         applicationId "org.dyndns.warenix.web2pdf"
         minSdkVersion 12
-        targetSdkVersion 24
-        versionCode 11
-        versionName "2.9"
+        jackOptions {
+            enabled true
+        }
     }
     buildTypes {
         release {
@@ -20,13 +20,22 @@ android {
             minifyEnabled false
         }
     }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 }
+
+ext.supportVersion = '25.1.0'
+ext.permissionDispatcherVersion = '2.3.1'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:support-v4:25.0.0'
+    compile "com.android.support:support-v4:${supportVersion}"
     compile 'com.android.support:appcompat-v7:25.0.0'
     compile 'com.android.support:recyclerview-v7:25.0.0'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'org.greenrobot:eventbus:3.0.0'
+    compile "com.github.hotchemi:permissionsdispatcher:${permissionDispatcherVersion}"
+    annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:${permissionDispatcherVersion}"
 }

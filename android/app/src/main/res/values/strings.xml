@@ -9,4 +9,8 @@
     <string name="label_pdf_option_orientation">Orientation</string>
     <string name="menu_option_convert">Convert</string>
     <string name="menu_option_file_manager">File Manager</string>
+    <string name="permission_button_allow">Allow</string>
+    <string name="permission_button_deny">Deny</string>
+    <string name="permission_write_external_rationale">Web2PDF cannot download pdf to storage because of lacking permission. Would you like to grant it permission?</string>
+    <string name="permission_write_external_denied">Quiting app because of lacking permissions to function</string>
 </resources>
