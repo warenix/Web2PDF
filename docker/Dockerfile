@@ -21,14 +21,14 @@ RUN apt-get -y install python-pip
 # 0. gunicorn
 RUN apt-get -y install gunicorn
 
-RUN useradd -ms /bin/bash web2pdf
+RUN useradd -ms /bin/bash -G root web2pdf
 
 # 0. add app code
 ADD Web2PDF-api /app
 WORKDIR /app
 
 
-RUN chown -R web2pdf:web2pdf /app
+RUN chown -R web2pdf:root /app
 RUN python setup.py develop
 
 EXPOSE 8080
