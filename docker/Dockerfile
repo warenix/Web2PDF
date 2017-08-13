@@ -29,6 +29,7 @@ WORKDIR /app
 
 
 RUN chown -R web2pdf:root /app
+RUN chmod -R u+w,g+w /app
 RUN python setup.py develop
 
 EXPOSE 8080
