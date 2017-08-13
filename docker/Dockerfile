@@ -28,12 +28,10 @@ ADD Web2PDF-api /app
 WORKDIR /app
 
 
-#RUN chown -R web2pdf:web2pdf /app
+RUN chown -R web2pdf:web2pdf /app
 RUN python setup.py develop
 
 EXPOSE 8080
-#USER web2pdf
-#ENTRYPOINT ["gunicorn", "-b :8080", "-w 4", "app:app"]
-#ENTRYPOINT ["sh", "-c", "/app/run.sh"]
-CMD /app/run.sh
+USER web2pdf
+ENTRYPOINT ["gunicorn", "-b :8080", "-w 4", "app:app"]
 
