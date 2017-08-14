@@ -3,12 +3,14 @@ package org.dyndns.warenix.web2pdf;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
+import android.support.v4.content.FileProvider;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +24,8 @@ import android.webkit.MimeTypeMap;
 import org.dyndns.warenix.web2pdf.model.FileItem;
 import org.dyndns.warenix.web2pdf.view.FileManagerAdapter;
 import org.dyndns.warenix.web2pdf.view.OnRecyclerItemClickListener;
+
+import java.io.File;
 
 /**
  * Created by warenix on 1/4/16.
@@ -96,9 +100,19 @@ public class FileManagerFragment extends Fragment implements LoaderManager.Loade
             public void onItemClick(RecyclerView.ViewHolder vh) {
                 Log.d(TAG, "click " + vh.toString());
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
                 FileItem fileItem = mAdapter.getData(vh.getAdapterPosition());
-                intent.setDataAndType(fileItem.getData(), "application/pdf");
+
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    intent.setDataAndType(fileItem.getData(), "application/pdf");
+                } else {
+                    File file = new File(fileItem.getData().getPath());
+                    Uri fileUri = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".provider", file);
+
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    intent.setDataAndType(fileUri, "application/pdf");
+                }
                 startActivity(intent);
             }
         });
