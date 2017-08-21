@@ -101,7 +101,9 @@ public class Web2PDFIntentService extends IntentService {
     }
 
     private void downloadPDFUsingService(Web2PDFArgument arg, ConvertResult result) {
-        String httpsDownloadUrl = result.result.pdf_url.replace("http", "https");
+        // TODO move
+//        String httpsDownloadUrl = result.result.pdf_url.replace("http", "https");
+        String httpsDownloadUrl = result.result.pdf_url;
 
         final Context context = getApplicationContext();
         File folder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
@@ -131,7 +133,8 @@ public class Web2PDFIntentService extends IntentService {
     }
 
     public static void showNotification(Context context, String title, String message) {
-        Notification notif = new NotificationCompat.Builder(context)
+        String channelId = "converted";
+        Notification notif = new NotificationCompat.Builder(context, channelId)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setSmallIcon(R.drawable.ic_launcher)

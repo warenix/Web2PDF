@@ -8,4 +8,8 @@
     <string name="label_pdf_option_paper_size">用紙サイズ</string>
     <string name="menu_option_convert">変換</string>
     <string name="menu_option_file_manager">ファイルマネージャー</string>
+    <string name="permission_button_allow">許可する</string>
+    <string name="permission_button_deny">否定する</string>
+    <string name="permission_write_external_denied">機能する権限がないためにアプリを終了する</string>
+    <string name="permission_write_external_rationale">Web2PDFは、権限が不足しているため、PDFをストレージにダウンロードできません。 許可を与えますか？</string>
 </resources>

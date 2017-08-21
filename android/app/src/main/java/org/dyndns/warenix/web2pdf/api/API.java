@@ -1,5 +1,7 @@
 package org.dyndns.warenix.web2pdf.api;
 
+import android.util.Log;
+
 import org.dyndns.warenix.web2pdf.util.NetworkUtil;
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
@@ -23,7 +25,7 @@ import okio.Okio;
  * Created by warenix on 3/21/15.
  */
 public class API {
-    static final String URL = "https://warenix-web2pdf.arukascloud.io/pdf/convert";
+    static final String URL = "http://web2pdf-web2pdf.1d35.starter-us-east-1.openshiftapps.com/pdf/convert";
     private static final MediaType CONTENT_TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
 
     private static OkHttpClient getOkHttpClient() {
@@ -69,6 +71,7 @@ public class API {
 
         if (responseText != null) {
             try {
+                Log.d("response", responseText);
                 JSONObject json = new JSONObject(responseText);
                 if (json.has("error")) {
                     Pdf.ConvertResult result = new Pdf.ConvertResult();

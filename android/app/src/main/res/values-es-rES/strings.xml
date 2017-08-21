@@ -8,4 +8,8 @@
     <string name="label_pdf_option_orientation">Orientación</string>
     <string name="menu_option_convert">Convertir</string>
     <string name="menu_option_file_manager">Administrador de archivos</string>
+    <string name="permission_button_allow">Permitir</string>
+    <string name="permission_button_deny">Negar</string>
+    <string name="permission_write_external_denied">Salir de la aplicación por falta de permisos para funcionar</string>
+    <string name="permission_write_external_rationale">Web2PDF no puede descargar pdf al almacenamiento por falta de permiso. ¿Deseas concederle permiso?</string>
 </resources>

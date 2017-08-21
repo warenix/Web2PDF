@@ -10,13 +10,13 @@
 
     <TextView
         android:id="@+id/file_item_title"
-        style="@style/TextAppearance.AppCompat.Title"
+        style="@android:style/TextAppearance.Material.Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/file_item_directory"
-        style="@style/TextAppearance.AppCompat.Caption"
+        style="@android:style/TextAppearance.Material.Caption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

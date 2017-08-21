@@ -1,18 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
 
     defaultConfig {
         applicationId "org.dyndns.warenix.web2pdf"
-        minSdkVersion 12
-        targetSdkVersion 25
-        versionCode 12
-        versionName "2.10"
-        jackOptions {
-            enabled true
-        }
+        minSdkVersion 14
+        targetSdkVersion 26
+        versionCode 13
+        versionName "2.11"
     }
     signingConfigs {
         release {
@@ -35,14 +32,16 @@ android {
     }
 }
 
-ext.supportVersion = '25.1.0'
+ext.supportVersion = '26.0.1'
 ext.permissionDispatcherVersion = '2.3.1'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile "com.android.support:support-v4:${supportVersion}"
-    compile 'com.android.support:appcompat-v7:25.0.0'
-    compile 'com.android.support:recyclerview-v7:25.0.0'
+    compile "com.android.support:support-core-utils:26.0.1"
+    compile 'com.android.support:support-compat:26.0.1'
+    compile 'com.android.support:recyclerview-v7:26.0.1'
+    compile 'com.android.support:support-fragment:26.0.1'
+    compile 'com.android.support:design:26.0.1'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile "com.github.hotchemi:permissionsdispatcher:${permissionDispatcherVersion}"
