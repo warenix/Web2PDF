@@ -25,7 +25,7 @@ import okio.Okio;
  * Created by warenix on 3/21/15.
  */
 public class API {
-    static final String URL = "http://web2pdf-web2pdf.1d35.starter-us-east-1.openshiftapps.com/pdf/convert";
+    static final String URL = "https://docker-rnipbaqzju.now.sh/pdf/convert";
     private static final MediaType CONTENT_TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
 
     private static OkHttpClient getOkHttpClient() {
