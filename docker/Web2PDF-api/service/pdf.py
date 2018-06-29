@@ -28,15 +28,7 @@ class ServicePdfHandler(BaseServiceHandler):
                 key = 'page-size'
                 page_size = j[key] if key in j else default_page_size
 
-
-                aurl = 'http://zh.m.wikipedia.org/wiki/%E9%A6%99%E6%B8%AF'
-                print 'url :', url
-                print 'aurl:', aurl
-                print 'equal?', url == aurl
-
                 url_quote = url
-                #url_quote = urllib2.quote(url)
-                #url_quote = self.quote_u(url)
                 filename=self.hash_url(url)
 
                 options={
@@ -51,35 +43,43 @@ class ServicePdfHandler(BaseServiceHandler):
 
 
                 here = os.path.dirname(os.path.realpath(__file__))
-                wkhtmltopdf_exe = 'wkhtmltopdf'
+                wkhtmltopdf_exe = '/usr/local/bin/wkhtmltopdf'
                 out_file='%s/../static/pdfout/%s.pdf' % (here, filename)
                 print 'using wkhtmltopdf located at [%s]' % wkhtmltopdf_exe
 
                 config = pdfkit.configuration(
                         wkhtmltopdf=wkhtmltopdf_exe
                         )
-
+                parts = urlparse.urlparse(request.url)
+                pdf_local_url = ('%s://%s/pdfout/%s.pdf' % (
+                    parts.scheme,
+                    os.getenv('OPENSHIFT_APP_DNS', '%s' % (request.host)),
+                    filename
+                    ))
                 try:
                     print 'converting [%s] now' % url_quote
                     print 'storing at [%s]' % out_file
                     pdfkit.from_url(url_quote, out_file, options=options, configuration=config)
                     print 'done'
-                    parts = urlparse.urlparse(request.url)
-                    pdf_local_url = ('%s://%s/pdfout/%s.pdf' % (
-                        parts.scheme,
-                        os.getenv('OPENSHIFT_APP_DNS', '%s' % (request.host)),
-                        filename
-                    ))
+                    
                     result = {
                             'url':url,
                             'pdf_url':pdf_local_url
                             }
                     self.set_result(result, 200)
                 except:
-                    e = sys.exc_info()[0]
-                    print "Unexpected error", str(e)
-                    traceback.print_exc()
-                    self.set_result(str(e), 500)
+                    # see if pdf is generated
+                    if os.path.isfile(out_file):
+                        result = {
+                                'url':url,
+                                'pdf_url':pdf_local_url
+                                }
+                        self.set_result(result, 200)
+                    else:
+                        e = sys.exc_info()[0]
+                        print "Unexpected error", str(e)
+                        traceback.print_exc()
+                        self.set_result(str(e), 500)
             elif service == 'remove':
                 j = self.get_json_param(request)
                 filename = urllib.unquote(j['filename'])
