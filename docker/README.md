@@ -68,3 +68,8 @@ Application code is placed at `/app`
     You can try again then.
     
 
+0. Test interactively
+
+    ```sh
+    docker run -u root -ti --rm -p8080:8080 --entrypoint=bash warenix/web2pdf:latest
+    ```
