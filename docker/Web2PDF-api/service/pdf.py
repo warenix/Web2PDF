@@ -51,7 +51,7 @@ class ServicePdfHandler(BaseServiceHandler):
 
 
                 here = os.path.dirname(os.path.realpath(__file__))
-                wkhtmltopdf_exe = '%s/../wkhtmltopdf' % here
+                wkhtmltopdf_exe = 'wkhtmltopdf'
                 out_file='%s/../static/pdfout/%s.pdf' % (here, filename)
                 print 'using wkhtmltopdf located at [%s]' % wkhtmltopdf_exe
 
