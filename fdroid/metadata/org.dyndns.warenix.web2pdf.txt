@@ -1,0 +1,21 @@
+Categories:None
+License:AML
+Web Site:
+Source Code:https://github.com/warenix/Web2PDF.git
+Issue Tracker:https://github.com/warenix/Web2PDF.git/issues
+
+Auto Name:Web2PDF
+
+Repo Type:git
+Repo:https://github.com/warenix/Web2PDF.git
+
+Build:2.12.1,65
+    commit=2.12.1
+    subdir=android/app
+    gradle=yes
+
+Auto Update Mode:None
+Update Check Mode:HTTP
+Update Check Data:https://raw.githubusercontent.com/warenix/Web2PDF/master/fdroid/release/versioncode|(.*[0-9]$)|https://raw.githubusercontent.com/warenix/Web2PDF/master/fdroid/release/versionname|(.*[0-9]$)
+Current Version:2.12.1
+Current Version Code:65
