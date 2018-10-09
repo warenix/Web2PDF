@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notif_title_download_failed">下載失敗</string>
+    <string name="notif_message_general_error">錯誤</string>
+    <string name="label_convert_this_url">轉換此網址</string>
+    <string name="label_rename_file_as">重新命名檔案為</string>
+    <string name="label_pdf_option_paper_size">紙張大小</string>
+    <string name="label_pdf_option_orientation">方向</string>
+    <string name="menu_option_convert">轉換</string>
+    <string name="menu_option_file_manager">檔案管理員</string>
+    <string name="permission_button_allow">允許</string>
+    <string name="permission_button_deny">拒絕</string>
+    <string name="permission_write_external_rationale">Web2PDF無法下載pdf到儲存空間因為缺少權限。你想要給予權限嗎？</string>
+    <string name="permission_write_external_denied">因為缺少必要權限而退出應用程式</string>
+</resources>
