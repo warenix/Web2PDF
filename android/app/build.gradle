@@ -9,13 +9,13 @@ android {
         applicationId "org.dyndns.warenix.web2pdf"
         minSdkVersion 14
         targetSdkVersion 29
-        versionCode 67
-        versionName "2.12.4"
+        versionCode 68
+        versionName "2.13.-"
     }
     buildTypes {
         release {
             minifyEnabled true
-	    shrinkResources true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
