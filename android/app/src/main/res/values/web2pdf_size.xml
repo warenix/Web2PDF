@@ -2,6 +2,8 @@
 
     <dimen name="short_a4">105dp</dimen>
     <dimen name="long_a4">140dp</dimen>
+    <dimen name="short_a5">74dp</dimen>
+    <dimen name="long_a5">105dp</dimen>
     <dimen name="short_a3">140dp</dimen>
     <dimen name="long_a3">216dp</dimen>
     <dimen name="short_legal">216dp</dimen>
