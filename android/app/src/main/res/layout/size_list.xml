@@ -23,6 +23,13 @@
             android:text="A3" />
 
         <TextView
+            android:id="@+id/a5"
+            style="@style/PaperText"
+            android:layout_width="@dimen/short_a5"
+            android:layout_height="@dimen/long_a5"
+            android:text="A5" />
+
+        <TextView
             android:id="@+id/legal"
             style="@style/PaperText"
             android:layout_width="@dimen/short_legal"

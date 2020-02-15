@@ -10,7 +10,7 @@ public class Pdf {
 
 
     public static enum PageSize {
-        A3, A4, LEGAL, LETTER,
+        A3, A4, A5, LEGAL, LETTER,
     }
 
     public static enum Orientation {
@@ -84,6 +84,8 @@ public class Pdf {
                 return "A3";
             case A4:
                 return "A4";
+            case A5:
+                return "A5";
             case LEGAL:
                 return "Legal";
             case LETTER:

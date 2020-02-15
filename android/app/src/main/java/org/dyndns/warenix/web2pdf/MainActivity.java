@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private static final String PREF_KEY_ORIENTATION = "orientation";
     Toast mToast;
-    private int[] sizeIDs = {R.id.a4, R.id.a3, R.id.legal, R.id.letter};
+    private int[] sizeIDs = {R.id.a4, R.id.a5, R.id.a3, R.id.legal, R.id.letter};
     private int[] orientationIDs = {R.id.portrait, R.id.landscape};
     private HorizontalScrollView mSizeHorizontalScrollView;
     private SizeOnClickListener mSizeOnClickListener;
@@ -194,6 +194,10 @@ public class MainActivity extends AppCompatActivity {
             }
             case R.id.a4: {
                 value = PageSize.A4;
+                break;
+            }
+            case R.id.a5: {
+                value = PageSize.A5;
                 break;
             }
             case R.id.legal: {
