@@ -1,7 +1,7 @@
 package org.dyndns.warenix.web2pdf.view;
 
 import android.database.Cursor;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import org.dyndns.warenix.web2pdf.model.FileItem;
