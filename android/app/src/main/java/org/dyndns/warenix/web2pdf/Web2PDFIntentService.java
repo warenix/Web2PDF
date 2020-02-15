@@ -3,13 +3,17 @@ package org.dyndns.warenix.web2pdf;
 import android.app.DownloadManager;
 import android.app.IntentService;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+
 import android.util.Log;
 
 import org.dyndns.warenix.web2pdf.api.API;
@@ -134,16 +138,34 @@ public class Web2PDFIntentService extends IntentService {
 
     public static void showNotification(Context context, String title, String message) {
         String channelId = "converted";
-        Notification notif = new NotificationCompat.Builder(context, channelId)
+        createNotificationChannel(context, channelId);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
+                .setSmallIcon(R.drawable.ic_launcher)
                 .setContentTitle(title)
                 .setContentText(message)
-                .setSmallIcon(R.drawable.ic_launcher)
-//                .setLargeIcon(aBitmap)
-                .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText(message))
-                .build();
-        notif.defaults |= Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE;
-        NotificationManager nm = (NotificationManager) context.getSystemService(Service.NOTIFICATION_SERVICE);
-        nm.notify(sNextNotificationId.getAndIncrement(), notif);
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+
+        // notificationId is a unique int for each notification that you must define
+        notificationManager.notify(sNextNotificationId.getAndIncrement(), builder.build());
+
+
     }
+
+    private static void createNotificationChannel(Context context, String channelId) {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(channelId, channelId, importance);
+            channel.setDescription(channelId);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
 }
