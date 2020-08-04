@@ -22,7 +22,7 @@ RUN apt-get -y install python-pip
 # 0. gunicorn
 RUN apt-get -y install gunicorn
 
-RUN curl -L -o libpng12-0.deb http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb && curl -L -o wkhtmltox.deb https://downloads.wkhtmltopdf.org/0.12/0.12.5/wkhtmltox_0.12.5-1.xenial_amd64.deb && dpkg -i libpng12-0.deb wkhtmltox.deb
+RUN curl -L -o libpng12-0.deb http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb && curl -L -o wkhtmltox.deb https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.bionic_amd64.deb && dpkg -i libpng12-0.deb wkhtmltox.deb
 
 RUN useradd -ms /bin/bash -G root web2pdf
 
@@ -33,7 +33,8 @@ WORKDIR /app
 
 RUN chown -R web2pdf:root /app
 RUN chmod -R u+w,g+w /app
-RUN python setup.py develop
+#RUN python setup.py develop
+RUN pip install -r requirements.txt
 
 EXPOSE 8080
 USER web2pdf
