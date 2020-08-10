@@ -106,8 +106,8 @@ public class Web2PDFIntentService extends IntentService {
 
     private void downloadPDFUsingService(Web2PDFArgument arg, ConvertResult result) {
         // TODO move
-//        String httpsDownloadUrl = result.result.pdf_url.replace("http", "https");
-        String httpsDownloadUrl = result.result.pdf_url;
+        String httpsDownloadUrl = result.result.pdf_url.replace("http", "https");
+//        String httpsDownloadUrl = result.result.pdf_url;
 
         final Context context = getApplicationContext();
         File folder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
