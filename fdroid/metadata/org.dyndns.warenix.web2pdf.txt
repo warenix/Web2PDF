@@ -14,7 +14,12 @@ Build:2.12.3,66
     subdir=android/app
     gradle=yes
 
+Build:2.13.2,69
+    commit=2.13.2
+    subdir=android/app
+    gradle=yes
+
 Auto Update Mode:None
 Update Check Mode:Tags
-Current Version:2.12.3
-Current Version Code:66
+Current Version:2.13.2
+Current Version Code:69
