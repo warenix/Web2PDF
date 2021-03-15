@@ -9,4 +9,4 @@ This repo contains all source codes for Web2PDF project, converts a webpage to a
 
 Thanks to [Fosshost][Fosshost] to sponsors the application server for the F-droid and Google Play version of Web2PDF
 
-[Fosshsot]: https://fosshost.org/
+[Fosshost]: https://fosshost.org/
