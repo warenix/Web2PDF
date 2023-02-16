@@ -28,4 +28,4 @@ simplejson==3.17.2
 six==1.14.0
 urllib3==1.25.8
 webencodings==0.5.1
-Werkzeug==1.0.1
+Werkzeug==2.2.3
